@@ -1,0 +1,25 @@
+{{- if .Values.db.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Release.Name }}-pg
+spec:
+  instances: {{ .Values.db.instances }}
+  storage:
+    size: {{ .Values.db.size }}
+    storageClass: local-path
+  bootstrap:
+    initdb:
+      database: {{ .Values.db.database }}
+      owner: {{ .Values.db.owner }}
+      {{- with .Values.db.initdb }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+  {{- with .Values.db.clusterSpec }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  affinity:
+    {{- with .Values.db.affinity }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}
