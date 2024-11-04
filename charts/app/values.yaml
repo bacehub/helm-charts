@@ -1,0 +1,22 @@
+serviceName: ""
+replicas: 1
+image:
+  name: ""
+  tag: ""
+  pullSecret: ""
+port: 3000
+livenessProbe: {}
+readinessProbe: {}
+env: {}
+db:
+  enabled: false
+  instances: 1
+  size: 5Gi
+  database: ""
+  owner: ""
+  affinity: {}
+  # initdb: {}
+  # clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
+ingress:
+  host: ""
+  annotations: {}
