@@ -12,23 +12,25 @@ spec:
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}
         app.kubernetes.io/component: application
+        {{- if .Values.serviceName }}
         app.kubernetes.io/part-of: {{ .Values.serviceName }}
+        {{- end }}
     spec:
       restartPolicy: Always
       imagePullSecrets:
-      - name: {{ .Values.image.pullSecret }}
+        - name: {{ .Values.image.pullSecret }}
       containers:
-      - name: {{ .Release.Name }}
-        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
-        imagePullPolicy: {{ if eq .Values.image.tag "latest" }}Always{{ else }}IfNotPresent{{ end }}
-        {{- if .Values.livenessProbe }}
-        livenessProbe: {{ .Values.livenessProbe | toYaml | nindent 2 }}
-        {{- end }}
-        {{- if .Values.readinessProbe }}
-        readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 2 }}
-        {{- end }}
-        ports:
-        - containerPort: {{ .Values.port }}
-        {{- if .Values.env }}
-        env: {{ .Values.env | toYaml | nindent 2 }}
-        {{- end }}
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ if eq .Values.image.tag "latest" }}Always{{ else }}IfNotPresent{{ end }}
+          {{- if .Values.livenessProbe }}
+          livenessProbe: {{ .Values.livenessProbe | toYaml | nindent 2 }}
+          {{- end }}
+          {{- if .Values.readinessProbe }}
+          readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 2 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.port }}
+          {{- if .Values.env }}
+          env: {{ .Values.env | toYaml | nindent 2 }}
+          {{- end }}
