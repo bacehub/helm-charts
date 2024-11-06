@@ -28,7 +28,7 @@ spec:
           {{- end }}
           ports:
             - containerPort: {{ .Values.port }}
-          {{- if or .Values.env .Values.db.injectEnv .Values.ingress.enabled }}
+          {{- if or .Values.env .Values.db.injectEnv .Values.ingress.enabled .Values.envOverride }}
           env:
             {{- if .Values.ingress.enabled }}
             - name: HOSTNAME
@@ -68,5 +68,8 @@ spec:
             {{- end }}
             {{- if .Values.env }}
             {{- .Values.env | toYaml | nindent 12 }}
+            {{- end }}
+            {{- if .Values.envOverride }}
+            {{- .Values.envOverride | toYaml | nindent 12 }}
             {{- end }}
           {{- end }}
