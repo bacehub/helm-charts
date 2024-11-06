@@ -1,4 +1,4 @@
-serviceName: ""
+name: ""
 replicas: 1
 image:
   name: ""

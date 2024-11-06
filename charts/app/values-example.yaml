@@ -1,4 +1,4 @@
-serviceName: "galactus"
+name: "galactus"
 replicas: 1
 image:
   name: "galactus"
