@@ -9,6 +9,8 @@ metadata:
 spec:
   template:
     spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
       initContainers:
         - name: wait-for-postgres
           image: postgres:16  # A lightweight image with psql to check the connection
