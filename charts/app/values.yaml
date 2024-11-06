@@ -11,6 +11,8 @@ readinessProbe: {}
 env: {}
 envOverride: {}
 containerSpec: {}
+volumes: []
+volumeMounts: []
 db:
   injectEnv: false
   envPrefix: "DATABASE"
