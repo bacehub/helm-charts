@@ -1,0 +1,47 @@
+serviceName: "galactus"
+replicas: 1
+image:
+  name: "galactus"
+  tag: "latest"
+  pullSecret: docker-pullsecret
+port: 80
+readinessProbe:
+  timeoutSeconds: 2
+  initialDelaySeconds: 3
+  httpGet:
+    path: /
+    port: 80
+livenessProbe:
+  timeoutSeconds: 2
+  initialDelaySeconds: 3
+  httpGet:
+    path: /
+    port: 80
+env:
+  - name: CUSTOM_ENV
+    value: foobar123
+db:
+  injectEnv: true
+  enabled: true
+  instances: 1
+  size: 5Gi
+  database: "foobar"
+  owner: "postgres"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: type
+                operator: In
+                values:
+                  - static
+  initdb:
+    database: postgres
+    owner: postgres
+  clusterSpec:
+    description: "Database description"
+ingress:
+  enabled: true
+  host: "foobar.example.com"
+  annotations: {}

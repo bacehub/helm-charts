@@ -9,14 +9,16 @@ livenessProbe: {}
 readinessProbe: {}
 env: {}
 db:
+  injectEnv: false
   enabled: false
   instances: 1
   size: 5Gi
   database: ""
   owner: ""
   affinity: {}
-  # initdb: {}
-  # clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
+  initdb: {}
+  clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
 ingress:
+  enabled: false
   host: ""
   annotations: {}
