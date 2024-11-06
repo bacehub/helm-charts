@@ -1,10 +1,18 @@
-serviceName: ""
+serviceName: "consumer-frontend"
 replicas: 1
 image:
-  name: ""
-  tag: ""
-  pullSecret: ""
-port: 3000
+  name: "bacehub/consumer-frontend"
+  tag: "latest"
+  pullSecret: docker-bacehub
+port: 80
+
+# serviceName: ""
+# replicas: 1
+# image:
+#   name: "blabla"
+#   tag: ""
+#   pullSecret: ""
+# port: 3000
 livenessProbe: {}
 readinessProbe: {}
 env: {}
@@ -18,5 +26,6 @@ db:
   # initdb: {}
   # clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
 ingress:
-  host: ""
+  enabled: true
+  host: "consumer.staging.bacehub.de"
   annotations: {}
