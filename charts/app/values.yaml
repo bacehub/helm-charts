@@ -1,4 +1,5 @@
 name: ""
+kind: Deployment
 replicas: 1
 image:
   name: ""

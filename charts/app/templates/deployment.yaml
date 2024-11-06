@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ .Values.kind }}
 metadata:
   name: {{ .Values.name }}
 spec:
