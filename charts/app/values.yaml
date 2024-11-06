@@ -10,6 +10,7 @@ readinessProbe: {}
 env: {}
 db:
   injectEnv: false
+  envPrefix: "DATABASE"
   enabled: false
   instances: 1
   size: 5Gi

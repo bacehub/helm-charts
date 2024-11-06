@@ -22,6 +22,7 @@ env:
     value: foobar123
 db:
   injectEnv: true
+  envPrefix: POSTGRESQL
   enabled: true
   instances: 1
   size: 5Gi
