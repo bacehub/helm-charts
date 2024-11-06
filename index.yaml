@@ -3,6 +3,16 @@ entries:
   app:
   - apiVersion: v2
     appVersion: 0.0.0
+    created: "2024-11-06T13:43:46.293474563Z"
+    description: Common appplication chart
+    digest: 8bbbd9d0b283d78f73aa00b8ea6a54ec042c5377c3054f881ea9749b1dc2a6eb
+    name: app
+    type: application
+    urls:
+    - https://github.com/bacehub/helm-charts/releases/download/app-0.1.20/app-0.1.20.tgz
+    version: 0.1.20
+  - apiVersion: v2
+    appVersion: 0.0.0
     created: "2024-11-06T13:25:08.384291996Z"
     description: Common appplication chart
     digest: 866a68c53449c0a8ae0ae8164d2de921feea69d1572b5e839fc1985d0cafc396
@@ -101,4 +111,4 @@ entries:
     urls:
     - https://github.com/bacehub/helm-charts/releases/download/app-0.1.1/app-0.1.1.tgz
     version: 0.1.1
-generated: "2024-11-06T13:25:08.384395931Z"
+generated: "2024-11-06T13:43:46.293522683Z"
