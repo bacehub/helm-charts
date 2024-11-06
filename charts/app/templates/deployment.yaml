@@ -26,8 +26,10 @@ spec:
           {{- if .Values.readinessProbe }}
           readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.port}}
           ports:
             - containerPort: {{ .Values.port }}
+          {{- end }}
           {{- if or .Values.env .Values.db.injectEnv .Values.ingress.enabled .Values.envOverride }}
           env:
             {{- if .Values.ingress.enabled }}
