@@ -10,6 +10,7 @@ livenessProbe: {}
 readinessProbe: {}
 env: {}
 envOverride: {}
+containerSpec: {}
 db:
   injectEnv: false
   envPrefix: "DATABASE"

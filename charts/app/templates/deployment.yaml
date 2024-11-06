@@ -30,6 +30,9 @@ spec:
           ports:
             - containerPort: {{ .Values.port }}
           {{- end }}
+          {{- with .Values.containerSpec }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           {{- if or .Values.env .Values.db.injectEnv .Values.ingress.enabled .Values.envOverride }}
           env:
             {{- if .Values.ingress.enabled }}
