@@ -5,7 +5,7 @@ metadata:
   name: migration
   annotations:
     "helm.sh/hook": post-install,pre-upgrade
-    "helm.sh/hook-weight": "0"  # Ensures this job runs early in the upgrade/install process
+    "helm.sh/hook-weight": "100"  # Run late since it relies on other resources being created first
 spec:
   template:
     spec:
