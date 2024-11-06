@@ -21,6 +21,7 @@ db:
   affinity: {}
   initdb: {}
   clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
+migration: {}
 ingress:
   enabled: false
   host: ""

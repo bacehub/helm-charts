@@ -43,6 +43,11 @@ db:
     owner: postgres
   clusterSpec:
     description: "Database description"
+migration:
+  enabled: true
+  image:
+    name: "migration"
+    tag: "latest"
 ingress:
   enabled: true
   host: "foobar.example.com"

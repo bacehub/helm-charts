@@ -1,0 +1,39 @@
+{{ if .Values.migration.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "0"  # Ensures this job runs early in the upgrade/install process
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16  # A lightweight image with psql to check the connection
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-pg-app
+                  key: uri
+          command: ["sh", "-c"]
+          args:
+            - >
+              until pg_isready -d "$DATABASE_URL"; do
+                echo "Waiting for PostgreSQL to be ready...";
+                sleep 5;
+              done;
+      containers:
+        - name: migration
+          image: "{{ .Values.migration.image.name }}:{{ .Values.migration.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-pg-app
+                  key: uri
+      restartPolicy: Never
+{{ end -}}
