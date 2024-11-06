@@ -3,6 +3,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: {{ .Release.Name }}-pg
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-rollback,post-delete
 spec:
   instances: {{ .Values.db.instances }}
   storage:
