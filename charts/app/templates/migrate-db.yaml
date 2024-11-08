@@ -1,4 +1,4 @@
-{{ if .Values.migration.enabled -}}
+{{- if .Values.migration.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -29,8 +29,8 @@ spec:
               done;
       containers:
         - name: migration
-          image: "{{ .Values.migration.image.name }}:{{ .Values.migration.image.tag }}"
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.migration.image.name }}:{{ default (default "latest" .Values.revision) .Values.migration.image.tag }}"
+          imagePullPolicy: {{ if eq (default (default "latest" .Values.revision) .Values.migration.image.tag) "latest" }}Always{{ else }}IfNotPresent{{ end }}
           env:
             - name: DATABASE_URL
               valueFrom:

@@ -1,6 +1,7 @@
 name: ""
 kind: Deployment
 replicas: 1
+revision: ""
 image:
   name: ""
   tag: ""

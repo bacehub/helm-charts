@@ -3,9 +3,10 @@ kind: Deployment
 replicas: 1
 image:
   name: "galactus"
-  tag: "latest"
+  tag: ""
   pullSecret: docker-pullsecret
 port: 80
+revision: "prod-commit"
 readinessProbe:
   timeoutSeconds: 2
   initialDelaySeconds: 3
@@ -47,7 +48,7 @@ migration:
   enabled: true
   image:
     name: "migration"
-    tag: "latest"
+    tag: ""
 ingress:
   enabled: true
   host: "foobar.example.com"
