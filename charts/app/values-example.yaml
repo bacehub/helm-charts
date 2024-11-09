@@ -4,7 +4,8 @@ replicas: 1
 image:
   name: "galactus"
   tag: ""
-  pullSecret: docker-pullsecret
+imagePullSecrets:
+  - name: docker-pullsecret
 port: 80
 revision: "prod-commit"
 readinessProbe:
