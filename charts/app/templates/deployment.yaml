@@ -1,4 +1,4 @@
-{{- /* Main application deployment */ -}}
+{{/* Main application deployment */}}
 apiVersion: apps/v1
 kind: {{ .Values.kind }}
 metadata:
@@ -18,6 +18,24 @@ spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if and .Values.db.enabled .Values.waitDb }}
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-pg-app
+                  key: uri
+          command: ["sh", "-c"]
+          args:
+            - >
+              until pg_isready -d "$DATABASE_URL"; do
+                echo "Waiting for PostgreSQL to be ready...";
+                sleep 5;
+              done;
       {{- end }}
       {{- if .Values.volumes }}
       volumes:

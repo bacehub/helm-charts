@@ -23,6 +23,7 @@ livenessProbe:
 env:
   - name: CUSTOM_ENV
     value: foobar123
+waitDb: true
 db:
   injectEnv: true
   envPrefix: POSTGRESQL
