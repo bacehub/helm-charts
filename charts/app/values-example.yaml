@@ -36,11 +36,11 @@ db:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-          - matchExpressions:
-              - key: type
-                operator: In
-                values:
-                  - static
+        - matchExpressions:
+          - key: node-role.kubernetes.io/database
+            operator: In
+            values:
+            - "true"
   initdb:
     database: postgres
     owner: postgres
