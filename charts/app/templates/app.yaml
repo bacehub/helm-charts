@@ -19,8 +19,8 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if and .Values.db.enabled .Values.waitDb }}
       initContainers:
+        {{- if and .Values.db.enabled .Values.waitDb }}
         - name: wait-for-postgres
           image: postgres:16
           env:
@@ -36,6 +36,12 @@ spec:
                 echo "Waiting for PostgreSQL to be ready...";
                 sleep 5;
               done;
+        {{- end }}
+        {{- if .Values.initContainers }}
+        {{- toYaml .Values.initContainers | nindent 8 }}
+        {{- end }}
+      {{- if not (or (and .Values.db.enabled .Values.waitDb) .Values.initContainers) }}
+      initContainers: []
       {{- end }}
       {{- if .Values.volumes }}
       volumes:

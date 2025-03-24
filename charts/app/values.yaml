@@ -15,6 +15,7 @@ envFrom: []
 containerSpec: {}
 volumes: []
 volumeMounts: []
+initContainers: []
 waitDb: false
 db:
   injectEnv: false
