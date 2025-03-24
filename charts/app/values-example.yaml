@@ -23,6 +23,11 @@ livenessProbe:
 env:
   - name: CUSTOM_ENV
     value: foobar123
+envFrom:
+  - configMapRef:
+      name: app-config
+  - secretRef:
+      name: app-secrets
 waitDb: true
 db:
   injectEnv: true

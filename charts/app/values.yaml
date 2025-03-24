@@ -11,6 +11,7 @@ livenessProbe: {}
 readinessProbe: {}
 env: {}
 envOverride: {}
+envFrom: []
 containerSpec: {}
 volumes: []
 volumeMounts: []

@@ -62,7 +62,11 @@ spec:
           {{- with .Values.containerSpec }}
           {{- toYaml . | nindent 10 }}
           {{- end }}
-          {{- if or .Values.env .Values.db.injectEnv .Values.ingress.enabled .Values.envOverride }}
+          {{- if or .Values.env .Values.db.injectEnv .Values.ingress.enabled .Values.envOverride .Values.envFrom }}
+          {{- if .Values.envFrom }}
+          envFrom:
+            {{- toYaml .Values.envFrom | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.ingress.enabled }}
             - name: HOSTNAME
