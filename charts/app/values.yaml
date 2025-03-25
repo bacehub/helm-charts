@@ -34,3 +34,4 @@ ingress:
   enabled: false
   host: ""
   annotations: {}
+  middlewares: []

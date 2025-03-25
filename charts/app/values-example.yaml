@@ -60,3 +60,6 @@ ingress:
   enabled: true
   host: "foobar.example.com"
   annotations: {}
+  middlewares:
+    - name: basic-auth
+    - name: rate-limit
