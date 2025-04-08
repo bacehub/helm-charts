@@ -1,4 +1,3 @@
-{{/* Main application deployment */}}
 apiVersion: apps/v1
 kind: {{ .Values.kind }}
 metadata:
@@ -57,9 +56,16 @@ spec:
           {{- if .Values.readinessProbe }}
           readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 12 }}
           {{- end }}
-          {{- if .Values.port}}
+          {{- if or .Values.port .Values.extraPorts }}
           ports:
+            {{- if .Values.port }}
             - containerPort: {{ .Values.port }}
+            {{- end }}
+            {{- if .Values.extraPorts }}
+            {{- range .Values.extraPorts }}
+            - containerPort: {{ .port }}
+            {{- end }}
+            {{- end }}
           {{- end }}
           {{- if .Values.volumeMounts }}
           volumeMounts:

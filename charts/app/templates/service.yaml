@@ -9,6 +9,13 @@ spec:
     - port: {{ .Values.port }}
       targetPort: {{ .Values.port }}
       protocol: TCP
+    {{- end }}
+    {{- if .Values.extraPorts }}
+    {{- range .Values.extraPorts }}
+    - port: {{ .port }}
+      targetPort: {{ .port }}
+      protocol: TCP
+    {{- end }}
   selector:
     app.kubernetes.io/name: {{ .Values.name }}
 {{ end -}}
