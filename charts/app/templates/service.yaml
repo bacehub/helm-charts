@@ -12,7 +12,8 @@ spec:
     {{- end }}
     {{- if .Values.extraPorts }}
     {{- range .Values.extraPorts }}
-    - port: {{ .port }}
+    - name: "{{ .port }}"
+      port: {{ .port }}
       targetPort: {{ .port }}
       protocol: TCP
     {{- end }}
