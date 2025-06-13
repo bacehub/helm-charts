@@ -8,6 +8,10 @@ image:
 imagePullSecrets:
 - name: docker-pullsecret
 
+env:
+- name: BINGO_SERVICE_URL
+  value: bingo.bingo.svc.cluster.local
+
 service:
   extraPorts:
   - name: grpc

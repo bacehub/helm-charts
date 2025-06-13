@@ -1,33 +1,17 @@
+nameOverride: ""
+fullnameOverride: ""
+
 replicaCount: 1
-
 kind: "Deployment"
-
 revision: "latest"
 image:
   repository: nginx
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: false
-  automount: false
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-podLabels: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
+env: []
 envFrom: []
-
 sidecar: []
-
 service:
   enabled: true
   type: ClusterIP
@@ -47,7 +31,7 @@ ingress:
   enabled: false
   entryPoints:
     - websecure
-  # match: Host(`example.com`)
+  match: Host(`replaceme.com`)
   extraRoutes: []
 
 resources: {}
@@ -70,3 +54,12 @@ volumeMounts: []
 nodeSelector: {}
 tolerations: []
 affinity: {}
+serviceAccount:
+  create: false
+  automount: false
+  annotations: {}
+  name: ""
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}

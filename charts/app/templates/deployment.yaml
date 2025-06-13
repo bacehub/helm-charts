@@ -42,15 +42,10 @@ spec:
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.rabbitmq.enabled }}
+          {{- $env := include "app.env" . | trim }}
+          {{- if $env }}
           env:
-            - name: AMQP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.rabbitmq.secretName }}
-                  key: {{ .Values.rabbitmq.passwordKey }}
-            - name: AMQP_URL
-              value: "amqp://{{ .Values.rabbitmq.user }}:$(AMQP_PASSWORD)@{{ .Values.rabbitmq.host }}:{{ .Values.rabbitmq.port }}"
+            {{- $env | nindent 12 }}
           {{- end }}
           {{- if .Values.service.enabled }}
           ports:

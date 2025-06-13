@@ -67,3 +67,4 @@ Image tag
 {{- define "app.imageTag" -}}
 {{- default (default "latest" .Values.revision) .Values.image.tag }}
 {{- end }}
+
