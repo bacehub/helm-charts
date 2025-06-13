@@ -28,6 +28,25 @@ sidecar:
 postgres:
   enabled: true
   instances: 2
+  envPrefix: POSTGRES
+  managed:
+    roles:
+    - name: gel
+      connectionLimit: -1
+      superuser: true
+      createdb: true
+      createrole: true
+      ensure: present
+      inherit: true
+      login: true
+      inRoles:
+      - postgres
+  postgresql:
+    enableAlterSystem: true
+  bootstrap:
+    initdb:
+      database: gel
+      owner: gel
 
 rabbitmq:
   enabled: true

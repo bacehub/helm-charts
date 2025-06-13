@@ -28,12 +28,15 @@ rabbitmq:
   port: 5672
 
 postgres:
-  envPrefix: POSTGRES
   enabled: false
+  envPrefix: POSTGRES
   instances: 2
   storage:
     size: 20Gi
     storageClass: "local-path"
+  bootstrap: {}
+  managed: {}
+  postgresql: {}
 
 
 ingress:

@@ -10,6 +10,18 @@ spec:
   storage:
     size: {{ .Values.postgres.storage.size }}
     storageClass: {{ .Values.postgres.storage.storageClass }}
+  {{- if .Values.postgres.bootstrap }}
+  bootstrap:
+    {{- .Values.postgres.bootstrap | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if .Values.postgres.managed }}
+  managed:
+    {{- .Values.postgres.managed | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if .Values.postgres.postgresql }}
+  postgresql:
+    {{- .Values.postgres.postgresql | toYaml | nindent 4 }}
+  {{- end }}
   monitoring:
     enablePodMonitor: true
   affinity:
