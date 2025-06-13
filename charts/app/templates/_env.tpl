@@ -15,6 +15,19 @@ Environment variables
 -}}
 {{- $env = concat $env $rabbitmqEnv -}}
 {{- end }}
+{{- if .Values.postgres.enabled }}
+{{- $pgSecretName := printf "%s-pg-app" (include "app.name" .) -}}
+{{- $pgPrefix := .Values.postgres.envPrefix -}}
+{{- $postgresEnv := list
+  (dict "name" "DATABASE_URL" "valueFrom" (dict "secretKeyRef" (dict "name" $pgSecretName "key" "uri")))
+  (dict "name" (printf "%s_USER" $pgPrefix) "valueFrom" (dict "secretKeyRef" (dict "name" $pgSecretName "key" "user")))
+  (dict "name" (printf "%s_PASSWORD" $pgPrefix) "valueFrom" (dict "secretKeyRef" (dict "name" $pgSecretName "key" "password")))
+  (dict "name" (printf "%s_HOST" $pgPrefix) "valueFrom" (dict "secretKeyRef" (dict "name" $pgSecretName "key" "host")))
+  (dict "name" (printf "%s_PORT" $pgPrefix) "valueFrom" (dict "secretKeyRef" (dict "name" $pgSecretName "key" "port")))
+  (dict "name" (printf "%s_DB" $pgPrefix) "valueFrom" (dict "secretKeyRef" (dict "name" $pgSecretName "key" "dbname")))
+-}}
+{{- $env = concat $env $postgresEnv -}}
+{{- end }}
 {{- if .Values.env }}
 {{- $env = concat $env .Values.env -}}
 {{- end }}

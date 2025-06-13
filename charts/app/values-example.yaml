@@ -25,6 +25,10 @@ sidecar:
     - name: logs
       mountPath: /var/log
 
+postgres:
+  enabled: true
+  instances: 2
+
 rabbitmq:
   enabled: true
   user: user

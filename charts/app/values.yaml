@@ -27,6 +27,15 @@ rabbitmq:
   host: rabbitmq.rabbitmq.svc.cluster.local
   port: 5672
 
+postgres:
+  envPrefix: POSTGRES
+  enabled: false
+  instances: 2
+  storage:
+    size: 20Gi
+    storageClass: "local-path"
+
+
 ingress:
   enabled: false
   entryPoints:
