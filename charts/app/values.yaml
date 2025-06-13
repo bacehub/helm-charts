@@ -1,10 +1,11 @@
 replicaCount: 1
 
+kind: "Deployment"
+
 revision: "latest"
 image:
   repository: nginx
   pullPolicy: IfNotPresent
-  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -23,21 +24,31 @@ podSecurityContext: {}
 
 securityContext: {}
 
+envFrom: []
+
+sidecar: []
+
 service:
   enabled: true
   type: ClusterIP
   port: 3000
+  name: http
+  extraPorts: []
 
 resources: {}
 
 livenessProbe:
+  timeoutSeconds: 2
+  initialDelaySeconds: 3
   httpGet:
-    path: /
-    port: http
+    path: /health
+    port: 3000
 readinessProbe:
+  timeoutSeconds: 2
+  initialDelaySeconds: 3
   httpGet:
-    path: /
-    port: http
+    path: /health
+    port: 3000
 
 volumes: []
 volumeMounts: []

@@ -1,0 +1,19 @@
+envFrom:
+- configMapRef:
+    name: app-config
+revision: "production"
+imagePullSecrets:
+- name: docker-pullsecret
+
+service:
+  extraPorts:
+  - name: grpc
+    port: 50051
+
+sidecar:
+- name: logging-sidecar
+  image: busybox
+  command: ["sh", "-c", "tail -f /var/log/app.log"]
+  volumeMounts:
+    - name: logs
+      mountPath: /var/log
