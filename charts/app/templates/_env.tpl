@@ -10,7 +10,7 @@ Environment variables
 {{- $env = concat $env $defaultEnv -}}
 {{- if .Values.rabbitmq.enabled }}
 {{- $rabbitmqEnv := list
-  (dict "name" "AMQP_PASSWORD" "valueFrom" (dict "secretKeyRef" (dict "name" .Values.rabbitmq.secretName "key" .Values.rabbitmq.passwordKey)))
+  (dict "name" "AMQP_PASSWORD" "valueFrom" (dict "secretKeyRef" (dict "name" .Values.rabbitmq.secret "key" .Values.rabbitmq.passwordKey)))
   (dict "name" "AMQP_URL" "value" (printf "amqp://%s:$(AMQP_PASSWORD)@%s:%v" .Values.rabbitmq.user .Values.rabbitmq.host .Values.rabbitmq.port))
 -}}
 {{- $env = concat $env $rabbitmqEnv -}}

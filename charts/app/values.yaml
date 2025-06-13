@@ -22,7 +22,7 @@ service:
 rabbitmq:
   enabled: false
   user: user
-  secretName: rabbitmq-auth
+  secret: rabbitmq-auth
   passwordKey: rabbitmq-password
   host: rabbitmq.rabbitmq.svc.cluster.local
   port: 5672
