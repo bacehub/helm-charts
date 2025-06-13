@@ -1,0 +1,34 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "app.name" . }}-pg
+  labels:
+    app.kubernetes.io/component: database
+spec:
+  instances: {{ .Values.postgres.instances }}
+  storage:
+    size: {{ .Values.postgres.storage.size }}
+    storageClass: {{ .Values.postgres.storage.storageClass }}
+  {{- if .Values.postgres.bootstrap }}
+  bootstrap:
+    {{- .Values.postgres.bootstrap | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if .Values.postgres.managed }}
+  managed:
+    {{- .Values.postgres.managed | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if .Values.postgres.postgresql }}
+  postgresql:
+    {{- .Values.postgres.postgresql | toYaml | nindent 4 }}
+  {{- end }}
+  monitoring:
+    enablePodMonitor: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/database
+                operator: Exists
+{{- end }}

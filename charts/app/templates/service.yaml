@@ -1,23 +1,23 @@
-{{ if .Values.port -}}
+{{- if .Values.service.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.name }}
+  name: {{ include "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.port }}
-      name: "{{ .Values.port }}"
-      targetPort: {{ .Values.port }}
-      protocol: TCP
-    {{- end }}
-    {{- if .Values.extraPorts }}
-    {{- range .Values.extraPorts }}
-    - name: "{{ .port }}"
-      port: {{ .port }}
-      targetPort: {{ .port }}
-      protocol: TCP
-    {{- end }}
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.name }}
+    protocol: TCP
+    name: {{ .Values.service.name }}
+  {{- range .Values.service.extraPorts }}
+  - port: {{ .port }}
+    targetPort: {{ .name }}
+    protocol: TCP
+    name: {{ .name }}
+  {{- end }}
   selector:
-    app.kubernetes.io/name: {{ .Values.name }}
-{{ end -}}
+    {{- include "app.selectorLabels" . | nindent 4 }}
+{{- end }}

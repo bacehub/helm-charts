@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled }}
+{{- if not .Values.service.enabled }}
+{{- fail "ingress.enabled requires service.enabled to be true" }}
+{{- end }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  {{- if .Values.ingress.name }}
+  name: {{ .Values.ingress.name }}
+  {{- else }}
+  name: {{ include "app.fullname" . }}
+  {{- end }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    {{- range .Values.ingress.entryPoints }}
+    - {{ . }}
+    {{- end }}
+  routes:
+{{- if .Values.ingress.match }}
+    - match: {{ .Values.ingress.match }}
+      kind: Rule
+      services:
+        - name: {{ include "app.fullname" . }}
+          port: {{ .Values.service.port }}
+{{- end }}
+{{- range .Values.ingress.extraRoutes }}
+    - {{ toYaml . | nindent 6 | trim }}
+{{- end }}
+{{- end }}

@@ -1,37 +1,83 @@
-name: ""
-kind: Deployment
-replicas: 1
-revision: ""
+nameOverride: ""
+fullnameOverride: ""
+replicaCount: 1
+kind: "Deployment"
+revision: "latest"
 image:
-  name: ""
-  tag: ""
+  repository: nginx
+  pullPolicy: IfNotPresent
+labels: {}
+
 imagePullSecrets: []
-port: {}
-livenessProbe: {}
-readinessProbe: {}
-env: {}
-envOverride: {}
+env: []
 envFrom: []
-containerSpec: {}
-volumes: []
-volumeMounts: []
-initContainers: []
-waitDb: false
-db:
-  injectEnv: false
-  envPrefix: "DATABASE"
+sidecar: []
+service:
+  enabled: true
+  type: ClusterIP
+  port: 3000
+  name: http
+  extraPorts: []
+
+rabbitmq:
   enabled: false
-  monitoring: true
-  instances: 1
-  size: 5Gi
-  database: ""
-  owner: ""
-  affinity: {}
-  initdb: {}
-  clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
-migration: {}
+  user: user
+  secretName: rabbitmq-auth
+  passwordKey: rabbitmq-password
+  host: rabbitmq.rabbitmq.svc.cluster.local
+  port: 5672
+
+postgres:
+  enabled: false
+  envPrefix: POSTGRES
+  instances: 2
+  storage:
+    size: 20Gi
+    storageClass: "local-path"
+  bootstrap: {}
+  managed: {}
+  postgresql: {}
+  wait: false
+
+reloader: false
+
+secrets: []
+
+configMaps: []
+
 ingress:
   enabled: false
-  host: ""
+  entryPoints:
+    - websecure
+  match: Host(`replaceme.com`)
+  extraRoutes: []
+
+resources: {}
+
+livenessProbe:
+  timeoutSeconds: 2
+  initialDelaySeconds: 3
+  httpGet:
+    path: /health
+    port: 3000
+readinessProbe:
+  timeoutSeconds: 2
+  initialDelaySeconds: 3
+  httpGet:
+    path: /health
+    port: 3000
+
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+serviceAccount:
+  create: false
+  automount: false
   annotations: {}
-  middlewares: []
+  name: ""
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}

@@ -1,65 +1,89 @@
-name: "galactus"
-kind: Deployment
-replicas: 1
-image:
-  name: "galactus"
-  tag: ""
-imagePullSecrets:
-  - name: docker-pullsecret
-port: 80
-revision: "prod-commit"
-readinessProbe:
-  timeoutSeconds: 2
-  initialDelaySeconds: 3
-  httpGet:
-    path: /
-    port: 80
-livenessProbe:
-  timeoutSeconds: 2
-  initialDelaySeconds: 3
-  httpGet:
-    path: /
-    port: 80
-env:
-  - name: CUSTOM_ENV
-    value: foobar123
+fullnameOverride: galactus
 envFrom:
-  - configMapRef:
-      name: app-config
-  - secretRef:
-      name: app-secrets
-waitDb: true
-db:
-  injectEnv: true
-  envPrefix: POSTGRESQL
+- configMapRef:
+    name: app-config
+- secretRef:
+    name: gel
+revision: "production"
+reloader: true
+image:
+  repository: ghcr.io/example/super-app
+imagePullSecrets:
+- name: docker-pullsecret
+
+env:
+- name: BINGO_SERVICE_URL
+  value: bingo.bingo.svc.cluster.local
+
+service:
+  extraPorts:
+  - name: grpc
+    port: 50051
+
+sidecar:
+- name: logging-sidecar
+  image: busybox
+  command: ["sh", "-c", "tail -f /var/log/app.log"]
+  volumeMounts:
+    - name: logs
+      mountPath: /var/log
+
+postgres:
   enabled: true
-  instances: 1
-  size: 5Gi
-  database: "foobar"
-  owner: "postgres"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: node-role.kubernetes.io/database
-            operator: In
-            values:
-            - "true"
-  initdb:
-    database: postgres
-    owner: postgres
-  clusterSpec:
-    description: "Database description"
-migration:
+  wait: true
+  instances: 2
+  envPrefix: POSTGRES
+  managed:
+    roles:
+    - name: gel
+      connectionLimit: -1
+      superuser: true
+      createdb: true
+      createrole: true
+      ensure: present
+      inherit: true
+      login: true
+      inRoles:
+      - postgres
+  postgresql:
+    enableAlterSystem: true
+  bootstrap:
+    initdb:
+      database: gel
+      owner: gel
+
+rabbitmq:
   enabled: true
-  image:
-    name: "migration"
-    tag: ""
+  user: user
+  secretName: rabbitmq-auth
+  passwordKey: rabbitmq-password
+  host: rabbitmq.rabbitmq.svc.cluster.local
+  port: 5672
+
 ingress:
   enabled: true
-  host: "foobar.example.com"
-  annotations: {}
-  middlewares:
-    - name: basic-auth
-    - name: rate-limit
+  name: app-webhook
+  entryPoints:
+    - websecure
+  match: Host(`app.example.com`)
+  extraRoutes:
+  - match: Host(`app.example.com`) && PathPrefix(`/api`)
+    kind: Rule
+    services:
+    - name: galactus
+      port: 50051
+secrets:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: gel
+    annotations:
+      secret-generator.v1.mittwald.de/autogenerate: "GEL_PASSWORD"
+  type: Opaque
+configMaps:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: app-config
+  data:
+    GEL_TLS_CLIENT_SECURITY: "insecure"
