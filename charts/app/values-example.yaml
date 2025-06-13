@@ -2,7 +2,10 @@ fullnameOverride: galactus
 envFrom:
 - configMapRef:
     name: app-config
+- secretRef:
+    name: gel
 revision: "production"
+reloader: true
 image:
   repository: ghcr.io/example/super-app
 imagePullSecrets:
@@ -58,6 +61,7 @@ rabbitmq:
 
 ingress:
   enabled: true
+  name: app-webhook
   entryPoints:
     - websecure
   match: Host(`app.example.com`)
@@ -67,3 +71,18 @@ ingress:
     services:
     - name: galactus
       port: 50051
+secrets:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: gel
+    annotations:
+      secret-generator.v1.mittwald.de/autogenerate: "GEL_PASSWORD"
+  type: Opaque
+configMaps:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: app-config
+  data:
+    GEL_TLS_CLIENT_SECURITY: "insecure"

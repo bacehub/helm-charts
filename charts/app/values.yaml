@@ -1,12 +1,12 @@
 nameOverride: ""
 fullnameOverride: ""
-
 replicaCount: 1
 kind: "Deployment"
 revision: "latest"
 image:
   repository: nginx
   pullPolicy: IfNotPresent
+labels: {}
 
 imagePullSecrets: []
 env: []
@@ -38,6 +38,11 @@ postgres:
   managed: {}
   postgresql: {}
 
+reloader: false
+
+secrets: []
+
+configMaps: []
 
 ingress:
   enabled: false

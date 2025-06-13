@@ -5,7 +5,11 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
+  {{- if .Values.ingress.name }}
+  name: {{ .Values.ingress.name }}
+  {{- else }}
   name: {{ include "app.fullname" . }}
+  {{- end }}
   labels:
     {{- include "app.labels" . | nindent 4 }}
   annotations:
