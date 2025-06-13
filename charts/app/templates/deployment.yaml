@@ -7,6 +7,7 @@ metadata:
   {{- if .Values.reloader }}
   annotations:
     reloader.stakater.com/auto: "true"
+    reloader.stakater.com/rollout-strategy: "restart"
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
@@ -33,6 +34,24 @@ spec:
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if and .Values.postgres.enabled .Values.postgres.wait }}
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.name" . }}-pg-app
+                  key: uri
+          command: ["sh", "-c"]
+          args:
+            - >
+              until pg_isready -d "$DATABASE_URL"; do
+                echo "Waiting for PostgreSQL to be ready...";
+                sleep 5;
+              done;
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}

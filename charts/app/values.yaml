@@ -37,6 +37,7 @@ postgres:
   bootstrap: {}
   managed: {}
   postgresql: {}
+  wait: false
 
 reloader: false
 

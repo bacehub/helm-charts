@@ -30,6 +30,7 @@ sidecar:
 
 postgres:
   enabled: true
+  wait: true
   instances: 2
   envPrefix: POSTGRES
   managed:
