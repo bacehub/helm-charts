@@ -2,6 +2,8 @@ envFrom:
 - configMapRef:
     name: app-config
 revision: "production"
+image:
+  repository: ghcr.io/example/super-app
 imagePullSecrets:
 - name: docker-pullsecret
 
@@ -17,3 +19,11 @@ sidecar:
   volumeMounts:
     - name: logs
       mountPath: /var/log
+
+rabbitmq:
+  enabled: true
+  user: user
+  secretName: rabbitmq-auth
+  passwordKey: rabbitmq-password
+  host: rabbitmq.rabbitmq.svc.cluster.local
+  port: 5672
