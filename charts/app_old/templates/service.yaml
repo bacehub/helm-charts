@@ -1,0 +1,23 @@
+{{ if .Values.port -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.port }}
+      name: "{{ .Values.port }}"
+      targetPort: {{ .Values.port }}
+      protocol: TCP
+    {{- end }}
+    {{- if .Values.extraPorts }}
+    {{- range .Values.extraPorts }}
+    - name: "{{ .port }}"
+      port: {{ .port }}
+      targetPort: {{ .port }}
+      protocol: TCP
+    {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ .Values.name }}
+{{ end -}}

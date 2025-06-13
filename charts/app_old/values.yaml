@@ -1,0 +1,37 @@
+name: ""
+kind: Deployment
+replicas: 1
+revision: ""
+image:
+  name: ""
+  tag: ""
+imagePullSecrets: []
+port: {}
+livenessProbe: {}
+readinessProbe: {}
+env: {}
+envOverride: {}
+envFrom: []
+containerSpec: {}
+volumes: []
+volumeMounts: []
+initContainers: []
+waitDb: false
+db:
+  injectEnv: false
+  envPrefix: "DATABASE"
+  enabled: false
+  monitoring: true
+  instances: 1
+  size: 5Gi
+  database: ""
+  owner: ""
+  affinity: {}
+  initdb: {}
+  clusterSpec: {} # https://cloudnative-pg.io/documentation/1.19/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
+migration: {}
+ingress:
+  enabled: false
+  host: ""
+  annotations: {}
+  middlewares: []
