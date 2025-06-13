@@ -43,6 +43,13 @@ rabbitmq:
   host: rabbitmq.rabbitmq.svc.cluster.local
   port: 5672
 
+ingress:
+  enabled: false
+  entryPoints:
+    - websecure
+  # match: Host(`example.com`)
+  extraRoutes: []
+
 resources: {}
 
 livenessProbe:
