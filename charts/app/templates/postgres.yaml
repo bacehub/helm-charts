@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: {{ include "app.name" . }}-pg
+  name: {{ include "app.fullname" . }}-pg
   labels:
     app.kubernetes.io/component: database
 spec:
