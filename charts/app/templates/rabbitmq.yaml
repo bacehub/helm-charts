@@ -1,0 +1,9 @@
+{{- if and .Values.rabbitmq.replicateFrom .Values.rabbitmq.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.rabbitmq.secret }}
+  annotations:
+    replicator.v1.mittwald.de/replicate-from: {{ .Values.rabbitmq.replicateFrom }}
+data: {}
+{{- end }}

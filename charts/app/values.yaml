@@ -23,6 +23,7 @@ rabbitmq:
   enabled: false
   user: user
   secret: rabbitmq-auth
+  replicateFrom: ""
   passwordKey: rabbitmq-password
   host: rabbitmq.rabbitmq.svc.cluster.local
   port: 5672
