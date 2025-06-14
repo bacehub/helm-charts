@@ -4,7 +4,7 @@ Environment variables
 {{- define "app.env" -}}
 {{- $env := list -}}
 {{- $defaultEnv := list
-  (dict "name" "SERVICE_NAME" "value" (include "app.name" .))
+  (dict "name" "SERVICE_NAME" "value" (include "app.fullname" .))
   (dict "name" "INSTANCE_NAME" "valueFrom" (dict "fieldRef" (dict "fieldPath" "metadata.name")))
 -}}
 {{- $env = concat $env $defaultEnv -}}
