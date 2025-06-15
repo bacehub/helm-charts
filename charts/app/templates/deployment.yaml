@@ -35,8 +35,8 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if and .Values.postgres.enabled .Values.postgres.wait }}
       initContainers:
+      {{- if and .Values.postgres.enabled .Values.postgres.wait }}
         - name: wait-for-postgres
           image: postgres:16
           env:
@@ -46,12 +46,36 @@ spec:
                   name: {{ include "app.fullname" . }}-pg-app
                   key: uri
           command: ["sh", "-c"]
-          args:
-            - >
+          args: 
+            |-
               until pg_isready -d "$DATABASE_URL"; do
                 echo "Waiting for PostgreSQL to be ready...";
                 sleep 5;
               done;
+      {{- end }}
+      {{- range .Values.initContainers }}
+        - name: {{ .name }}
+          image: "{{ .image.repository }}:{{ .image.tag | default $.Values.revision }}"
+          {{- with $.Values.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- $env := include "app.env" $ | trim }}
+          env:
+          {{- if .inheritEnv }}
+          {{- if $env }}
+          {{- $env | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          {{- if .env }}
+          {{ .env | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .command }}
+          command: {{ .command | toJson }}
+          {{- end }}
+          {{- if .args }}
+          args: {{ .args | toJson }}
+          {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}

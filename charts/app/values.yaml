@@ -53,6 +53,8 @@ ingress:
   match: Host(`replaceme.com`)
   extraRoutes: []
 
+initContainers: []
+
 resources: {}
 
 livenessProbe:
