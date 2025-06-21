@@ -31,4 +31,9 @@ spec:
           - matchExpressions:
               - key: node-role.kubernetes.io/database
                 operator: Exists
+          - matchExpressions:
+              - key: node.kubernetes.io/role
+                operator: In
+                values:
+                  - database
 {{- end }}
