@@ -55,6 +55,11 @@ ingress:
 
 initContainers: []
 
+worker:
+  enabled: false
+  replicaCount: 1
+  command: []
+
 resources: {}
 
 livenessProbe:

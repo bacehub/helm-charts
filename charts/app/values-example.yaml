@@ -53,6 +53,11 @@ postgres:
       database: gel
       owner: gel
 
+worker:
+  enabled: true
+  replicaCount: 2
+  command: ["galactus", "work"]
+
 rabbitmq:
   enabled: true
   user: user

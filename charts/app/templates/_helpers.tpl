@@ -24,6 +24,14 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Selector labels
+*/}}
+{{- define "app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "app.fullname" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "app.labels" -}}
@@ -38,13 +46,6 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
-{{- define "app.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "app.fullname" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
 
 {{/*
 Create the name of the service account to use
