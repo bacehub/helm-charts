@@ -7,8 +7,9 @@ metadata:
     {{- include "app.labels" . | nindent 4 }}
     app.kubernetes.io/component: rover
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   template:
     metadata:
@@ -19,7 +20,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: rover
-          image: busybox:latest
+          image: alpine:latest
           envFrom:
             - secretRef:
                 name: apollo
@@ -27,7 +28,8 @@ spec:
             - sh
             - -c
             - |
-              curl -sSL https://rover.apollo.dev/nix/latest | sh
+              apk add --no-cache curl bash
+              curl -sSL https://rover.apollo.dev/nix/latest | bash
               export PATH="$HOME/.rover/bin:$PATH"
               rover subgraph introspect http://{{ include "app.fullname" . }}:{{ .Values.service.port }}/graphql | \
               rover subgraph publish {{ .Values.rover.graphRef }} \
