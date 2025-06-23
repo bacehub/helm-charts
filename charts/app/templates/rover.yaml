@@ -1,0 +1,37 @@
+{{- if .Values.rover.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "app.fullname" . }}-rover
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: rover
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: rover
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: rover
+          image: busybox:latest
+          envFrom:
+            - secretRef:
+                name: apollo
+          command:
+            - sh
+            - -c
+            - |
+              curl -sSL https://rover.apollo.dev/nix/latest | sh
+              export PATH="$HOME/.rover/bin:$PATH"
+              rover subgraph introspect http://{{ include "app.fullname" . }}:{{ .Values.service.port }}/graphql | \
+              rover subgraph publish {{ .Values.rover.graphRef }} \
+                --name {{ include "app.fullname" . }} \
+                --schema - \
+                --routing-url http://{{ include "app.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.port }}/graphql
+{{- end }}

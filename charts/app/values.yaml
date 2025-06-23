@@ -60,6 +60,10 @@ worker:
   replicaCount: 1
   command: []
 
+rover:
+  enabled: false
+  graphRef: ""
+
 resources: {}
 
 livenessProbe:

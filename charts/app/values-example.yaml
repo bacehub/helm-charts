@@ -81,7 +81,6 @@ initContainers:
   inheritEnv: true
   image:
     repository: ghcr.io/example/galactus-migration
-    tag: latest
   command: []
   args: []
 
@@ -113,3 +112,7 @@ configMaps:
     name: app-config
   data:
     GEL_TLS_CLIENT_SECURITY: "insecure"
+
+rover:
+  enabled: true
+  graphRef: star-wars@current
