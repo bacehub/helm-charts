@@ -5,6 +5,8 @@ metadata:
   name: {{ include "app.fullname" . }}-pg
   labels:
     app.kubernetes.io/component: database
+  finalizers:
+    - cnpg.io/cluster
 spec:
   instances: {{ .Values.postgres.instances }}
   storage:
