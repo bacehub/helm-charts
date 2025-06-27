@@ -8,6 +8,9 @@ metadata:
   finalizers:
     - cnpg.io/cluster
 spec:
+  {{- with .Values.postgres.image }}
+  image: {{ . }}
+  {{- end }}
   instances: {{ .Values.postgres.instances }}
   storage:
     size: {{ .Values.postgres.storage.size }}

@@ -31,6 +31,7 @@ sidecar:
 
 postgres:
   enabled: true
+  image: ghcr.io/cloudnative-pg/postgis:17
   wait: true
   instances: 2
   envPrefix: POSTGRES
