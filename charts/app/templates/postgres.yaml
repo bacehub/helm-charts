@@ -9,7 +9,7 @@ metadata:
     - cnpg.io/cluster
 spec:
   {{- with .Values.postgres.image }}
-  image: {{ . }}
+  imageName: {{ . }}
   {{- end }}
   instances: {{ .Values.postgres.instances }}
   storage:
