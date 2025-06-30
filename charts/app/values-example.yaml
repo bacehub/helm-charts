@@ -16,6 +16,12 @@ env:
 - name: BINGO_SERVICE_URL
   value: bingo.bingo.svc.cluster.local
 
+envOverlay:
+- name: LOG_LEVEL
+  value: debug
+- name: ADDITIONAL_FEATURE
+  value: enabled
+
 service:
   extraPorts:
   - name: grpc

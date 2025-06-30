@@ -31,6 +31,9 @@ Environment variables
 {{- if .Values.env }}
 {{- $env = concat $env .Values.env -}}
 {{- end }}
+{{- if .Values.envOverlay }}
+{{- $env = concat $env .Values.envOverlay -}}
+{{- end }}
 {{- if $env }}
 {{- toYaml $env }}
 {{- end }}
