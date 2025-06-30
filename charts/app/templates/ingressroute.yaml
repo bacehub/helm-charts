@@ -23,6 +23,12 @@ spec:
 {{- if .Values.ingress.match }}
     - match: {{ .Values.ingress.match }}
       kind: Rule
+      {{- if .Values.ingress.middlewares }}
+      middlewares:
+        {{- range .Values.ingress.middlewares }}
+        - name: {{ . }}
+        {{- end }}
+      {{- end }}
       services:
         - name: {{ include "app.fullname" . }}
           port: {{ .Values.service.port }}

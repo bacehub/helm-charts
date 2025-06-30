@@ -91,6 +91,9 @@ ingress:
   entryPoints:
     - websecure
   match: Host(`app.example.com`)
+  middlewares:
+    - auth-middleware
+    - rate-limit
   extraRoutes:
   - match: Host(`app.example.com`) && PathPrefix(`/api`)
     kind: Rule

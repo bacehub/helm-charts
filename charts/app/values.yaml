@@ -51,6 +51,7 @@ ingress:
   entryPoints:
     - websecure
   match: Host(`replaceme.com`)
+  middlewares: []
   extraRoutes: []
 
 initContainers: []
