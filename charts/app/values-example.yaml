@@ -92,8 +92,10 @@ ingress:
     - websecure
   match: Host(`app.example.com`)
   middlewares:
-    - auth-middleware
-    - rate-limit
+    - name: auth-middleware
+      namespace: traefik-system
+    - name: rate-limit
+      namespace: default
   extraRoutes:
   - match: Host(`app.example.com`) && PathPrefix(`/api`)
     kind: Rule
