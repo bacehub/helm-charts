@@ -35,6 +35,8 @@ sidecar:
     - name: logs
       mountPath: /var/log
 
+arch: "arm64"
+
 postgres:
   enabled: true
   image: ghcr.io/cloudnative-pg/postgis:17

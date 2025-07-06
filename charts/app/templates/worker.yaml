@@ -121,9 +121,23 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- if .Values.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- else if and .Values.arch (ne .Values.arch "") }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                {{- if eq .Values.arch "x86" }}
+                - amd64
+                {{- else if eq .Values.arch "arm64" }}
+                - arm64
+                {{- end }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
