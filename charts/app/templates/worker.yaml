@@ -4,7 +4,7 @@ kind: {{ .Values.kind | default "Deployment" }}
 metadata:
   name: {{ include "app.fullname" . }}-worker
   labels:
-    app.kubernetes.io/name: {{ include "app.name" . }}-worker
+    app.kubernetes.io/name: {{ include "app.fullname" . }}-worker
     app.kubernetes.io/component: worker
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -16,7 +16,7 @@ spec:
   replicas: {{ .Values.worker.replicaCount | default 1 }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "app.name" . }}-worker
+      app.kubernetes.io/name: {{ include "app.fullname" . }}-worker
       app.kubernetes.io/component: worker
   template:
     metadata:
