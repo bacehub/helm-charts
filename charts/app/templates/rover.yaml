@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: {{ include "app.fullname" . }}-rover
   labels:
-    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "app.fullname" . }}-rover
     app.kubernetes.io/component: rover
   annotations:
     "helm.sh/hook": post-install,post-upgrade
@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "app.labels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ include "app.fullname" . }}-rover
         app.kubernetes.io/component: rover
     spec:
       restartPolicy: Never
