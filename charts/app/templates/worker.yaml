@@ -25,7 +25,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "app.labels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ include "app.fullname" . }}-worker
         app.kubernetes.io/component: worker
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
