@@ -9,10 +9,13 @@ Environment variables
 -}}
 {{- $env = concat $env $defaultEnv -}}
 {{- if .Values.rabbitmq.enabled }}
-{{- $rabbitmqEnv := list
-  (dict "name" "AMQP_PASSWORD" "valueFrom" (dict "secretKeyRef" (dict "name" .Values.rabbitmq.secret "key" .Values.rabbitmq.passwordKey)))
-  (dict "name" "AMQP_URL" "value" (printf "amqp://%s:$(AMQP_PASSWORD)@%s:%v" .Values.rabbitmq.user .Values.rabbitmq.host .Values.rabbitmq.port))
--}}
+{{- $rabbitmqEnv := list -}}
+{{- if .Values.rabbitmq.password }}
+{{- $rabbitmqEnv = append $rabbitmqEnv (dict "name" "AMQP_PASSWORD" "value" .Values.rabbitmq.password) -}}
+{{- else }}
+{{- $rabbitmqEnv = append $rabbitmqEnv (dict "name" "AMQP_PASSWORD" "valueFrom" (dict "secretKeyRef" (dict "name" .Values.rabbitmq.secret.name "key" .Values.rabbitmq.secret.passwordKey))) -}}
+{{- end }}
+{{- $rabbitmqEnv = append $rabbitmqEnv (dict "name" "AMQP_URL" "value" (printf "amqp://%s:$(AMQP_PASSWORD)@%s:%v" .Values.rabbitmq.user .Values.rabbitmq.host .Values.rabbitmq.port)) -}}
 {{- $env = concat $env $rabbitmqEnv -}}
 {{- end }}
 {{- if .Values.postgres.enabled }}

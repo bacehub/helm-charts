@@ -23,11 +23,13 @@ service:
 
 rabbitmq:
   enabled: false
-  user: user
-  secret: rabbitmq-auth
-  replicateFrom: ""
-  passwordKey: rabbitmq-password
-  host: rabbitmq.rabbitmq.svc.cluster.local
+  user: app
+  password: ""
+  secret:
+    name: rabbitmq-app-credentials
+    passwordKey: password
+    replicateFrom: ""
+  host: rabbitmq.rabbitmq-system.svc.cluster.local
   port: 5672
 
 postgres:
