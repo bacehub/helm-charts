@@ -61,6 +61,16 @@ postgres:
     initdb:
       database: gel
       owner: gel
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: cnpg.io/cluster
+                operator: In
+                values:
+                  - galactus-pg
+          topologyKey: "topology.kubernetes.io/zone"
 
 worker:
   enabled: true

@@ -36,6 +36,18 @@ postgres:
   enabled: false
   envPrefix: POSTGRES
   instances: 2
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/database
+                operator: Exists
+          - matchExpressions:
+              - key: node.kubernetes.io/role
+                operator: In
+                values:
+                  - database
   storage:
     size: 20Gi
     storageClass: "local-path"
