@@ -36,6 +36,7 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if or (and .Values.postgres.enabled .Values.postgres.wait) .Values.initContainers }}
       initContainers:
       {{- if and .Values.postgres.enabled .Values.postgres.wait }}
         - name: wait-for-postgres
@@ -62,6 +63,8 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- $env := include "app.env" $ | trim }}
+          {{- $hasEnv := or (and .inheritEnv $env) .env }}
+          {{- if $hasEnv }}
           env:
           {{- if .inheritEnv }}
           {{- if $env }}
@@ -71,12 +74,19 @@ spec:
           {{- if .env }}
           {{ .env | toYaml | nindent 12 }}
           {{- end }}
+          {{- end }}
           {{- if .command }}
-          command: {{ .command | toJson }}
+          command:
+            {{- toYaml .command | nindent 12 }}
           {{- end }}
           {{- if .args }}
-          args: {{ .args | toJson }}
+          args:
+            {{- toYaml .args | nindent 12 }}
           {{- end }}
+          {{- if .restartPolicy }}
+          restartPolicy: {{ .restartPolicy }}
+          {{- end }}
+      {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}

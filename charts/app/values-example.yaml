@@ -72,11 +72,6 @@ postgres:
                   - galactus-pg
           topologyKey: "topology.kubernetes.io/zone"
 
-worker:
-  enabled: true
-  replicaCount: 2
-  command: ["galactus", "work"]
-
 rabbitmq:
   enabled: true
 
@@ -96,6 +91,23 @@ initContainers:
     repository: ghcr.io/example/galactus-migration
   command: []
   args: []
+- name: entropy-kaos-service
+  inheritEnv: true
+  image:
+    repository: ghcr.io/example/eks
+  restartPolicy: Always
+  command:
+    - sh
+    - -c
+  args:
+    - |
+      apk add --no-cache curl bash
+      curl -sSL https://rover.apollo.dev/nix/latest | bash
+      export PATH="$HOME/.rover/bin:$PATH"
+      rover subgraph introspect http://galactus:3000/graphql | \
+      rover subgraph publish star-wars@current \
+        --name galactus \
+        --schema
 
 ingress:
   enabled: true
