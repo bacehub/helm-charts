@@ -34,6 +34,7 @@ rabbitmq:
 
 postgres:
   enabled: false
+  plugins: []
   envPrefix: POSTGRES
   instances: 2
   affinity:

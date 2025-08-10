@@ -8,6 +8,10 @@ metadata:
   finalizers:
     - cnpg.io/cluster
 spec:
+  {{- with .Values.postgres.plugins }}
+  plugins:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
   {{- with .Values.postgres.image }}
   imageName: {{ . }}
   {{- end }}
