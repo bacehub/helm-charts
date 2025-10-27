@@ -1,0 +1,17 @@
+{{- if and .Values.postgres.enabled .Values.postgres.backup.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: {{ include "app.fullname" . }}-pg-backup
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: database-backup
+spec:
+  cluster:
+    name: {{ include "app.fullname" . }}-pg
+  schedule: {{ .Values.postgres.backup.schedule | quote }}
+  backupOwnerReference: self
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+{{- end }}
