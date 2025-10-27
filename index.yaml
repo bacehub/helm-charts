@@ -3,6 +3,16 @@ entries:
   app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-10-27T22:49:29.520031601Z"
+    description: A Helm chart for Kubernetes
+    digest: 48679d399144c35e73d29a37bbee506ed47d5c6347941d11546766f511d41d66
+    name: app
+    type: application
+    urls:
+    - https://github.com/bacehub/helm-charts/releases/download/app-0.4.1/app-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-27T16:10:04.293032176Z"
     description: A Helm chart for Kubernetes
     digest: 3a4b7b3cee51ddfc64da3230c182c1ea840f8342bf2c863386da609baa5a42fe
@@ -541,4 +551,4 @@ entries:
     urls:
     - https://github.com/bacehub/helm-charts/releases/download/app-0.1.1/app-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-27T16:10:04.29326314Z"
+generated: "2025-10-27T22:49:29.520254688Z"
