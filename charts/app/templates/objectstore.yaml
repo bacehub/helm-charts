@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/component: database-backup
 spec:
   configuration:
-    destinationPath: s3://{{ required "postgres.backup.s3.bucketName is required when backup is enabled" .s3.bucketName }}/{{ include "app.fullname" $ }}-pg
+    destinationPath: s3://{{ required "postgres.backup.s3.bucketName is required when backup is enabled" .s3.bucketName }}/{{ include "app.fullname" $ }}
     endpointURL: {{ .s3.endpointURL }}
     s3Credentials:
       accessKeyId:
