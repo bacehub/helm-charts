@@ -8,9 +8,17 @@ metadata:
   finalizers:
     - cnpg.io/cluster
 spec:
-  {{- with .Values.postgres.plugins }}
+  {{- if or .Values.postgres.backup.enabled .Values.postgres.plugins }}
   plugins:
+    {{- if .Values.postgres.backup.enabled }}
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: {{ include "app.fullname" . }}-pg-backup
+    {{- end }}
+    {{- with .Values.postgres.plugins }}
     {{- . | toYaml | nindent 4 }}
+    {{- end }}
   {{- end }}
   {{- with .Values.postgres.image }}
   imageName: {{ . }}

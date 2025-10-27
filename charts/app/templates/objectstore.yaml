@@ -1,0 +1,24 @@
+{{- if and .Values.postgres.enabled .Values.postgres.backup.enabled }}
+{{- with .Values.postgres.backup }}
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: {{ include "app.fullname" $ }}-pg-backup
+  labels:
+    {{- include "app.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: database-backup
+spec:
+  configuration:
+    destinationPath: s3://{{ required "postgres.backup.s3.bucketName is required when backup is enabled" .s3.bucketName }}/{{ include "app.fullname" $ }}-pg
+    endpointURL: {{ .s3.endpointURL }}
+    s3Credentials:
+      accessKeyId:
+        name: {{ .s3.credentials.secretName }}
+        key: {{ .s3.credentials.accessKeyIdKey }}
+      secretAccessKey:
+        name: {{ .s3.credentials.secretName }}
+        key: {{ .s3.credentials.secretAccessKeyKey }}
+    wal:
+      {{- .wal | toYaml | nindent 6 }}
+{{- end }}
+{{- end }}

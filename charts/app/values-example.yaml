@@ -71,6 +71,17 @@ postgres:
                 values:
                   - galactus-pg
           topologyKey: "topology.kubernetes.io/zone"
+  backup:
+    enabled: true
+    s3:
+      bucketName: "galactus-pg-backups"
+      endpointURL: "https://s3.us-east-1.amazonaws.com"
+      credentials:
+        secretName: "aws-s3-credentials"
+        accessKeyIdKey: "AWS_ACCESS_KEY_ID"
+        secretAccessKeyKey: "AWS_SECRET_ACCESS_KEY"
+    wal:
+      compression: gzip
 
 rabbitmq:
   enabled: true
