@@ -75,6 +75,7 @@ postgres:
     enabled: true
     s3:
       bucketName: "galactus-pg-backups"
+      path: "custom/backups/galactus"
       endpointURL: "https://s3.us-east-1.amazonaws.com"
       credentials:
         secretName: "aws-s3-credentials"
